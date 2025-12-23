@@ -1,0 +1,20 @@
+package com.jeeva.Smart.Library.Management.dto.member.Request;
+
+import com.jeeva.Smart.Library.Management.enums.MemberStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+
+@Data
+public class UpdateMemberRequest {
+    @NotBlank(message = "name cannot be blank")
+    private String name;
+
+    @NotBlank
+    @Pattern(regexp = "^[0-9]{10}$|^\\+[0-9]{1,3}[0-9]{10}$", message = "Invalid phone number format")
+    private String phone;
+
+    @NotNull(message = "Status must be Active or Blocked")
+    private MemberStatus status;
+}
