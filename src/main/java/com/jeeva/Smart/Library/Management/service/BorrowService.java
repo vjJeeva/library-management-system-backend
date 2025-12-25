@@ -6,6 +6,7 @@ import com.jeeva.Smart.Library.Management.dto.borrow.Request.ReturnBorrowBookReq
 import com.jeeva.Smart.Library.Management.dto.borrow.Response.BorrowRecordResponse;
 import com.jeeva.Smart.Library.Management.enums.BorrowStatus;
 import com.jeeva.Smart.Library.Management.enums.MemberStatus;
+import com.jeeva.Smart.Library.Management.exception.ResourceNotFoundException;
 import com.jeeva.Smart.Library.Management.mapper.BorrowRecordMapper;
 import com.jeeva.Smart.Library.Management.model.Book;
 import com.jeeva.Smart.Library.Management.model.BorrowRecord;
@@ -13,9 +14,7 @@ import com.jeeva.Smart.Library.Management.model.Member;
 import com.jeeva.Smart.Library.Management.repository.BookRepository;
 import com.jeeva.Smart.Library.Management.repository.BorrowRecordRepository;
 import com.jeeva.Smart.Library.Management.repository.MemberRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class BorrowService {
@@ -40,11 +37,11 @@ public class BorrowService {
 
     @Transactional
     public BorrowRecordResponse  borrow (BorrowBookRequest request){
-        Member member=memberRepository.findById(request.getMemberId()).orElseThrow(()->new RuntimeException("member not found"));
+        Member member=memberRepository.findById(request.getMemberId()).orElseThrow(()->new ResourceNotFoundException("member not found"));
         if (member.getStatus()== MemberStatus.BLOCKED){
             throw new RuntimeException("member is blocked");
         }
-        Book book = bookRepository.findById(request.getBookId()).orElseThrow(()->new RuntimeException("Book not found"));
+        Book book = bookRepository.findById(request.getBookId()).orElseThrow(()->new ResourceNotFoundException("Book not found"));
         if(book.getAvailableCopies()<=0){
             throw new RuntimeException("No copies available");
 
@@ -62,7 +59,7 @@ public class BorrowService {
     public void returnBook( ReturnBorrowBookRequest request) {
 
         BorrowRecord record = borrowRecordRepository.findById(request.getBorrowRecordId())
-                .orElseThrow(() -> new RuntimeException("Borrow record not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Borrow record not found"));
 
         if (record.getStatus() != BorrowStatus.BORROWED) {
             throw new RuntimeException("Book already returned");

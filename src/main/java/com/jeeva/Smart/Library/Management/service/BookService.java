@@ -2,6 +2,7 @@ package com.jeeva.Smart.Library.Management.service;
 
 import com.jeeva.Smart.Library.Management.dto.book.Request.CreateBookRequest;
 import com.jeeva.Smart.Library.Management.dto.book.Response.BookResponse;
+import com.jeeva.Smart.Library.Management.exception.ResourceNotFoundException;
 import com.jeeva.Smart.Library.Management.mapper.BookMapper;
 import com.jeeva.Smart.Library.Management.model.Book;
 import com.jeeva.Smart.Library.Management.repository.BookRepository;
@@ -37,7 +38,7 @@ public class BookService {
             throw new IllegalArgumentException("Copies must be greater than zero");
         }
 
-        Book book= bookRepository.findByIsbn(isbn).orElseThrow(()-> new RuntimeException("Book doesn't exist"));
+        Book book= bookRepository.findByIsbn(isbn).orElseThrow(()-> new ResourceNotFoundException("Book doesn't exist"));
 
         book.setTotalCopies(book.getTotalCopies()+copies);
         book.setAvailableCopies(book.getAvailableCopies()+copies);
@@ -51,7 +52,7 @@ public class BookService {
             throw new IllegalArgumentException("Copies must be greater than zero");
         }
 
-        Book book=bookRepository.findByIsbn(isbn).orElseThrow(()-> new RuntimeException("BOok doesn't exist"));
+        Book book=bookRepository.findByIsbn(isbn).orElseThrow(()-> new ResourceNotFoundException("BOok doesn't exist"));
 
         if (book.getAvailableCopies() < damaged) {
             throw new RuntimeException("Not enough available copies to remove");
@@ -69,7 +70,7 @@ public class BookService {
             throw new IllegalArgumentException("Copies must be greater than zero");
         }
 
-        Book book=bookRepository.findByIsbn(isbn).orElseThrow(()-> new RuntimeException("BOok doesn't exist"));
+        Book book=bookRepository.findByIsbn(isbn).orElseThrow(()-> new ResourceNotFoundException("Book doesn't exist"));
 
         if ((book.getTotalCopies()- book.getAvailableCopies()) < damaged) {
             throw new RuntimeException("Not enough borrowed copies to remove");
@@ -86,7 +87,7 @@ public class BookService {
     }
 
     public BookResponse viewBook(String isbn){
-        Book book=bookRepository.findByIsbn(isbn).orElseThrow(()-> new RuntimeException("BOok doesn't exist"));
+        Book book=bookRepository.findByIsbn(isbn).orElseThrow(()-> new ResourceNotFoundException("BOok doesn't exist"));
         return (bookMapper.toResponse(book));
     }
 }
