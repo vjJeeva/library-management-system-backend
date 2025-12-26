@@ -30,9 +30,10 @@ public class MemberService {
             throw new RuntimeException("Email already registered");
         }
 
-        Member member=memberMapper.toEntity(request);
-        memberRepository.save(member);
-        return memberMapper.toResponse(member);
+        Member member = memberMapper.toEntity(request);
+
+        Member savedMember = memberRepository.save(member);
+        return memberMapper.toResponse(savedMember);
     }
 
     @Transactional

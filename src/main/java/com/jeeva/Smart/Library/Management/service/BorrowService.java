@@ -51,8 +51,8 @@ public class BorrowService {
         borrowRecord.setMember(member);
         borrowRecord.setBook(book);
         book.setAvailableCopies(book.getAvailableCopies()-1);
-        borrowRecordRepository.save(borrowRecord);
-        return borrowRecordMapper.toResponse(borrowRecord);
+        BorrowRecord borrowRecordSaved=borrowRecordRepository.save(borrowRecord);
+        return borrowRecordMapper.toResponse(borrowRecordSaved);
     }
 
     @Transactional

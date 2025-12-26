@@ -28,8 +28,8 @@ public class BookService {
         }
         Book book=bookMapper.toEntity(request);
 
-        bookRepository.save(book);
-        return bookMapper.toResponse(book);
+        Book bookSaved=bookRepository.save(book);
+        return bookMapper.toResponse(bookSaved);
     }
 
     @Transactional

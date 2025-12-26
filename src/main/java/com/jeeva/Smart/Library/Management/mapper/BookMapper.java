@@ -14,6 +14,6 @@ public interface BookMapper {
     @Mapping(target = "availableCopies", expression = "java(request.getTotalCopies())")
     Book toEntity (CreateBookRequest request);
 
-    @Mapping(target = "borrowedCopies")
+    @Mapping(target = "borrowedCopies", expression = "java(book.getBorrowedCopies())")
     BookResponse toResponse (Book book);
 }

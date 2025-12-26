@@ -4,9 +4,15 @@ import com.jeeva.Smart.Library.Management.enums.MemberStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UpdateMemberRequest {
     @NotBlank(message = "name cannot be blank")
     private String name;

@@ -13,6 +13,7 @@ public interface BorrowRecordMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "member", ignore = true)
     @Mapping(target = "book", ignore = true)
+    @Mapping(target = "returnDate", ignore = true)
     @Mapping(target = "borrowDate", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "status" , constant = "BORROWED")
     BorrowRecord toEntity (BorrowBookRequest request);

@@ -23,14 +23,14 @@ public class BorrowController {
     private final BorrowService borrowService;
 
     @PostMapping("/borrow")
-    public ResponseEntity<?> borrowBook (@Valid BorrowBookRequest request){
+    public ResponseEntity<?> borrowBook (@RequestBody @Valid BorrowBookRequest request){
         BorrowRecordResponse borrowRecordResponse=borrowService.borrow(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(borrowRecordResponse);
     }
 
     @PostMapping("borrow/return")
-    public ResponseEntity<?> returnBook (@Valid ReturnBorrowBookRequest request){
+    public ResponseEntity<?> returnBook (@RequestBody @Valid ReturnBorrowBookRequest request){
         borrowService.returnBook(request);
         return ResponseEntity.ok(Map.of("message", "Book successfully returned"));
     }
